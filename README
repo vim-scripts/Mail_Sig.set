@@ -1,0 +1,20 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=45
+
+This file defines an alternative to the macro :
+
+                          map ,kqs G?^> *-- $dG 
+
+
+It comes as a command. This time, VIM won't complains about not found ^> *-- $ pattern. BTW, It also deletes all the empty lines (quoted or not) just above the signature to delete.
+
+Older versions (for VIM 5.7) of the file define the function Erase_Sig(). 
+The latest version (for VIM 6.x) defines the command :EraseSignature. 
+
+It can also delete up to two signatures -- some mailing lists add another dashes-delimited
+signature. And it keeps our signature that may be automatically inserted by some MUAs 
+like Mutt.
+
+
+Since v1.4: the operator-pending mode mapping '--' is defined. Hitting d--, c-- or y--
+will delete, change or yank lines until our own signature (if present) or the end of the file.
+
