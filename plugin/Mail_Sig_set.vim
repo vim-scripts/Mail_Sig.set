@@ -2,10 +2,17 @@
 " File: 	Mail_Sig_set.vim
 " Author:	Luc Hermitte <EMAIL:hermitte@free.fr>
 " 		<URL:http://hermitte.free.fr>
-" Last Update:	28th jun 2002
+" Last Update:	03rd jul 2002
 "
 " Purpose:	Defines a command that deletes signatures at the end of e-mail
 "               (/usenet post) replies.
+" Bonus:	Defines an operator-pending mapping that will match our own
+" 		signature or the end of the file. Very handy when we want to
+" 		delete every line of a reply but our signature.
+" 		Usage: d-- to delete till the signature/end of the file
+" 		       c-- to change till the signature/end of the file
+" 		       y-- to yank   till the signature/end of the file
+" 		       etc.
 "
 " Installation:	Drop this file into your $HOME/vimfiles/ftplugin/mail/ 
 " 		directory and invokes the EraseSignature command (either from
@@ -17,12 +24,22 @@
 "
 "===========================================================================
 
-" if exists("g:loaded_Mail_Sig_set_vim") | finish | endif
+if exists("g:loaded_Mail_Sig_set_vim") | finish | endif
 let g:loaded_Mail_Sig_set_vim = 1
+"---------------------------------------------------------------------------
 
-command! -nargs=0 EraseSignature :call <sid>Erase_Sig()
+onoremap -- /\n^-- \=$\\|\%$/+0<cr>
+" explaination of the pattern : {{{
+" 1- either match a new line (\n) followed by the double dashed alone on a
+"    line
+" 2- or match the last line (\%: line ; $:last)
+" the {offset} of '+0' permit to match the end of the new line or the very end
+" of the file.
+" }}}
 
 "---------------------------------------------------------------------------
+command! -nargs=0 EraseSignature :call <sid>Erase_Sig()
+
 " Function:	s:Erase_Sig() {{{
 " Purpose:	Delete signatures at the end of e-mail replies.
 " Features:	* Does not beep when no signature is found
@@ -80,6 +97,6 @@ endfunction
 
 " NB: Uncomment the next line if you want to handle the suppresion of the
 " signature from this file only ...
-" :EraseSignature	" uncomment me ?
+:EraseSignature	" uncomment me ?
 "===========================================================================
 " vim60: set fdm=marker:
